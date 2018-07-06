@@ -6,8 +6,8 @@ cortex_TemplateRight = load('/Users/pinheirochagas/Pedro/Stanford/code/lin_plot_
 cortex_TemplateLeft = load('/Users/pinheirochagas/Pedro/Stanford/code/lin_plot_elec/Colin_cortex_left.mat');
 
 %% Load the electrode coordinates in MNI space
-load('/Users/pinheirochagas/Downloads/ECOG.mat');
-sEEG = load('/Users/pinheirochagas/Downloads/SEEG.mat');
+load('/Users/pinheirochagas/Pedro/Stanford/code/lin_plot_elec/ECOG.mat');
+sEEG = load('/Users/pinheirochagas/Pedro/Stanford/code/lin_plot_elec/SEEG.mat');
 
 elec_coords = origCoords;
 
@@ -17,7 +17,7 @@ ctmr_gauss_plot(cortex_TemplateLeft.cortex,[0 0 0], 0, 'l', 1)
 % you can also configurate the view (last input parameter - viewside)
 
 %%
-dir_out = '/Users/pinheirochagas/Pedro/drive/Stanford/presentations/laschool_2018/'
+dir_out = '/Users/pinheirochagas/Pedro/Stanford/code/lin_plot_elec/'
 
 %% initiate figure
 figureDim = [0 0 .7 .7];
@@ -102,17 +102,18 @@ alpha(0.2)
 save2pdf([dir_out 'ventral_right_sEEG.pdf'], gcf, 600)
 
 
-col_plot = parula(200);
+col_plot = parula(1000);
 
+el_mni = elec_coords_lat(1:1000,:)
 plot3(el_mni(:,1),el_mni(:,2),el_mni(:,3), 'Color', col_plot(i,:), 'Marker', '.', 'MarkerSize', 20)
 
 
-for e = 1:1
+for e = 1:10
     ctmr_gauss_plot(cortex_TemplateLeft.cortex,[0 0 0], 0, 'l', 1)
     for i = 1:size(el_mni)
-        f = plot3(el_mni(i,1),el_mni(i,2),el_mni(i,3), '.', 'Color', col_plot(i,:), 'MarkerSize', 50*rand)
+        f = plot3(el_mni(i,1),el_mni(i,2),el_mni(i,3), '.', 'Color', col_plot(i,:), 'MarkerSize', 50*rand);
     end
-    F(e) = getframe(gcf, [100 100 100 100]);
+    F(e) = getframe(gcf);
     close all
 end
 
@@ -120,11 +121,11 @@ end
 
 
 fig = figure;
-movie(fig,F,20)
+movie(fig,F,3)
 
 
-videoRSA = VideoWriter([dir_out 'video_ex.avi']);
-uncompressedVideo = VideoWriter([dir_out 'video_ex.avi'], 'Uncompressed AVI');
+videoRSA = VideoWriter([dir_out 'video_ex_2.avi']);
+uncompressedVideo = VideoWriter([dir_out 'video_ex_2.avi'], 'Uncompressed AVI');
 videoRSA.FrameRate = 10;  % Default 30
 videoRSA.Quality = 100;    % Default 75
 open(videoRSA);
